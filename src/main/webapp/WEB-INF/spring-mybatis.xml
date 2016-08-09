@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <!-- dataSource定义 日常环境测试库
+        initialSize: 连接池启动时创建的初始化连接数量（不设定即为0）
+        maxActive: 连接池中可同时连接的最大的连接数（默认值为8)
+        minIdle: 连接池中最小的空闲的连接数，低于这个数量会被创建新的连接
+        maxIdle: 连接池中最大的空闲的连接数，超过的空闲连接将被释放
+        maxWait: 最大等待时间，当没有可用连接时，连接池等待连接释放的最大时间，超过该时间限制会抛出异常
+        removeAbandoned: 超过removeAbandonedTimeout时间后，是否进行没用连接（废弃）的回收（默认为false),举例当maxActive=20, 活动连接为18,空闲连接为1时可以触发"removeAbandoned".但是活动连接只有在没有被使用的时间超过"removeAbandonedTimeout(这里默认为300秒)"时才被回收.遇到数据库死锁。以前遇到过后端存储过程做了锁表操作，导致前台集群中连接池全都被block住，后续的业务处理因为拿不到链接所有都处理失败了。
+    -->
+    <bean id="dsSunflower" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+          p:driverClassName="com.mysql.jdbc.Driver"
+          p:url="jdbc:mysql://rds3l2g2526z2j613o8to.mysql.rds.aliyuncs.com:3306/sunflower?useUnicode=true&amp;characterEncoding=UTF-8"
+          p:username="onlinetestuser"
+          p:password="DingupOnlineTest_user160725"
+          p:initialSize="5"
+          p:maxActive="30"
+          p:maxIdle="20"
+          p:minIdle="5"
+          p:maxWait="60000"
+          p:removeAbandoned="true"
+          p:removeAbandonedTimeout="300" />
+
+    <!-- mybatis文件配置，扫描所有mapper文件 -->
+    <!-- configLocation为mybatis属性 mapperLocations为所有mapper-->
+    <bean id="sqlSessionFactory"
+          class="org.mybatis.spring.SqlSessionFactoryBean"
+          p:dataSource-ref="dsSunflower"
+          p:configLocation="classpath:conf/mybatis-config.xml"
+          p:mapperLocations="classpath:mapper/*.xml"/>
+
+    <!-- spring与mybatis整合配置，扫描所有dao -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+          p:basePackage="com.dingup.onlinetest.dao"
+          p:sqlSessionFactoryBeanName="sqlSessionFactory"/>
+
+    <!-- 对数据源进行事务管理 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dsSunflower"/>
+</beans>

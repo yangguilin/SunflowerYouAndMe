@@ -1,0 +1,16 @@
+
+#iDiv_bottomTip_c { text-align: center; background-color: aliceblue; display:none; }
+#iDiv_bottomTip_c span {
+    display:inline-block;
+    color:gray;
+    font-size:12px;
+    font-weight:bold;
+}
+
+
+.cDiv_imgContainer { padding: 20px; }
+.cDiv_imgItem { margin-bottom: 20px; float: left; width: 200px; }
+.cDiv_imgItem img { max-width: 100%; border-radius: 5px; }
+.cDiv_hBigImgItem { width:400px; height:300px; }
+.cDiv_vBigImgItem { width:300px; height:400px; }
+.cDiv_hiddenImgItem { visibility: hidden; }

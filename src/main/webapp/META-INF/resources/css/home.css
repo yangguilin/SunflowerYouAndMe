@@ -1,0 +1,20 @@
+
+.cDiv_Container {
+    margin-top: 100px;
+    height:600px;
+    text-align: center;
+    vertical-align: middle;
+}
+.cDiv_BackgroundImg{
+    background-image: url('/img/home/001.jpg');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 600px;
+    height:430px;
+    display: inline-block;
+    position: relative;
+    padding:0px;
+    border-radius: 15px;
+}
+.cDiv_MenuBar { display:none; }
